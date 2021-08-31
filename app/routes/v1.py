@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 import requests
-from utils.const import BASE_URL,TAIL_URL
-from utils.DB_functions import get_region_ids
+from utils.const import BASE_URL, TAIL_URL
+from utils.DB_functions import get_region_ids, insert_region_data
+from models.region import Region
 
 app_v1 = APIRouter()
 
@@ -25,3 +26,8 @@ async def get_db_region_ids():
     result = await get_region_ids()
     return result
 
+
+@app_v1.post("/db/region_insert")
+async def post_db_region_data(region: Region):
+    await insert_region_data(region)
+    return {"return": "region is created"}
