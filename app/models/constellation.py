@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from pydantic import BaseModel
 
@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class Constellation(BaseModel):
     constellation_id: int
     name: str
-    position: List[float]
+    position: Dict
     region_id: int
     systems: List[int]
 
