@@ -28,8 +28,18 @@ async def get_region_constellation_ids(region_id):
     return result
 
 
-async def insert_constellation_data(constellation):
-    query = """insert into constellation(constellation_id ,name, position, region_id, systems)
-                values (:constellation_id ,:name, :position, :region_id, :systems)"""
-    values = dict(constellation)
+async def insert_constellation_data(constellation, position):
+    query = """insert into constellation(constellation_id ,name,  region_id, systems)
+                values (:constellation_id ,:name,  :region_id, :systems)"""
+    constellation = dict(constellation)
+    values = constellation
+    #
+    # await db_execute(query, False, values)
+
+    query = """insert into position(x, y, z, object_id, object_type)
+                values (:x, :y, :z, :object_id, :object_type)"""
+    values = dict(position)
+    values["object_id"] = constellation["constellation_id"]
+    values["object_type"] = "constellation"
+
     await db_execute(query, False, values)

@@ -4,6 +4,7 @@ from utils.const import BASE_URL, TAIL_URL
 from utils.DB_functions import get_region_ids, insert_region_data, get_region_constellation_ids, insert_constellation_data, get_constellation_ids
 from models.region import Region
 from models.constellation import Constellation
+from models.position import Position
 
 app_v1 = APIRouter()
 
@@ -54,6 +55,6 @@ async def post_db_region_data(region: Region):
 
 
 @app_v1.post("/db/constellation_insert")
-async def post_db_constellation_data(constellation: Constellation):
-    await insert_constellation_data(constellation)
+async def post_db_constellation_data(constellation: Constellation, position:Position):
+    await insert_constellation_data(constellation,position)
     return {"result": "constellation is created"}
