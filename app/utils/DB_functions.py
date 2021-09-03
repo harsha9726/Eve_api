@@ -1,5 +1,6 @@
 from .DB import db_fetch, db_execute
-from psycopg2.extras import Json
+from fastapi.encoders import jsonable_encoder
+import json
 
 async def get_region_ids():
     query = """select region_id from region"""
@@ -28,18 +29,19 @@ async def get_region_constellation_ids(region_id):
     return result
 
 
-async def insert_constellation_data(constellation, position):
-    query = """insert into constellation(constellation_id ,name,  region_id, systems)
-                values (:constellation_id ,:name,  :region_id, :systems)"""
+async def insert_constellation_data(constellation):
+    query = """insert into constellation(constellation_id ,name,  region_id, systems, position)
+                values (:constellation_id ,:name,  :region_id, :systems, :position)"""
     constellation = dict(constellation)
+    constellation["position"] = json.dumps(jsonable_encoder(constellation["position"]))
     values = constellation
-    #
-    # await db_execute(query, False, values)
-
-    query = """insert into position(x, y, z, object_id, object_type)
-                values (:x, :y, :z, :object_id, :object_type)"""
-    values = dict(position)
-    values["object_id"] = constellation["constellation_id"]
-    values["object_type"] = "constellation"
 
     await db_execute(query, False, values)
+    #
+    # query = """insert into position(x, y, z, object_id, object_type)
+    #             values (:x, :y, :z, :object_id, :object_type)"""
+    # values = dict(constellation["position"])
+    # values["object_id"] = constellation["constellation_id"]
+    # values["object_type"] = "constellation"
+    #
+    # await db_execute(query, False, values)
