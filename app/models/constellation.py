@@ -1,12 +1,7 @@
 from typing import List
 
 from pydantic import BaseModel
-
-
-class Position(BaseModel):
-    x: float
-    y: float
-    z: float
+from .position import Position
 
 
 class Constellation(BaseModel):
