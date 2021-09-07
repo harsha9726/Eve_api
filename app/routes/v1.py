@@ -102,7 +102,6 @@ async def get_db_constellation_data(constellation_id: int):
 @app_v1.get("/db/system_data/{system_id}", response_model=System, response_model_exclude=["id"], tags=["System", "DB"])
 async def get_db_constellation_data(system_id: int):
     system = await get_system_data(system_id)
-    print(system)
     if system:
         system["planets"] = json.loads(system["planets"])
         system["position"] = json.loads(system["position"])
