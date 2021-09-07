@@ -2,15 +2,30 @@ from .DB import db_fetch, db_execute
 from fastapi.encoders import jsonable_encoder
 import json
 
+
 async def get_region_ids():
-    query = """select region_id from region"""
+    query = """select region_id from region order by 1"""
     result = await db_fetch(query, is_one=False)
     return result
 
 
+async def get_region_data(region_id):
+    query = """select * from region where region_id=:region_id order by 1"""
+    values = {"region_id": region_id}
+    result = await db_fetch(query, True, values)
+    return result
+
+
 async def get_constellation_ids():
-    query = """select constellation_id from constellation"""
+    query = """select constellation_id from constellation order by 1"""
     result = await db_fetch(query, is_one=False)
+    return result
+
+
+async def get_constellation_data(constellation_id):
+    query = """select * from constellation where constellation_id=:constellation_id order by 1"""
+    values = {"constellation_id": constellation_id}
+    result = await db_fetch(query, True, values)
     return result
 
 
@@ -22,7 +37,7 @@ async def insert_region_data(region):
 
 
 async def get_region_constellation_ids(region_id):
-    query = """select constellations from region where region_id=:region_id"""
+    query = """select constellations from region where region_id=:region_id order by 1"""
     values = {"region_id": region_id}
     # print(query,values)
     result = await db_fetch(query, True, values)
@@ -37,4 +52,3 @@ async def insert_constellation_data(constellation):
     values = constellation
 
     await db_execute(query, False, values)
-

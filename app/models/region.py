@@ -1,10 +1,12 @@
-from typing import List
+from typing import List, Optional
+
+from fastapi import Form
 
 from pydantic import BaseModel
 
 
 class Region(BaseModel):
     region_id: int
-    description: str
+    description: Optional[str] = Form("")
     name: str
     constellations: List[int]
