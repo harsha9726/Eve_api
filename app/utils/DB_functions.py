@@ -37,11 +37,4 @@ async def insert_constellation_data(constellation):
     values = constellation
 
     await db_execute(query, False, values)
-    #
-    # query = """insert into position(x, y, z, object_id, object_type)
-    #             values (:x, :y, :z, :object_id, :object_type)"""
-    # values = dict(constellation["position"])
-    # values["object_id"] = constellation["constellation_id"]
-    # values["object_type"] = "constellation"
-    #
-    # await db_execute(query, False, values)
+
