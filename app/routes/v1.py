@@ -6,7 +6,6 @@ from utils.DB_functions import get_region_ids, insert_region_data, get_region_co
 from models.region import Region
 from models.constellation import Constellation
 
-
 app_v1 = APIRouter()
 
 
@@ -33,19 +32,25 @@ async def get_constellation_detail(constellation_id: int):
 
 @app_v1.get("/db/region_ids")
 async def get_db_region_ids():
-    result = await get_region_ids()
+    region_ids = await get_region_ids()
+    result = []
+    for region in region_ids:
+        result.append(region["region_id"])
     return result
 
 
 @app_v1.get("/db/constellation_ids/{region_id}")
 async def get_db_region_constellation_ids(region_id: int):
     result = await get_region_constellation_ids(region_id)
-    return result
+    return result["constellations"]
 
 
 @app_v1.get("/db/constellation_ids")
 async def get_db_constellation_ids():
-    result = await get_constellation_ids()
+    constellation_ids = await get_constellation_ids()
+    result = []
+    for constellation in constellation_ids:
+        result.append(constellation["constellation_id"])
     return result
 
 
