@@ -30,6 +30,14 @@ async def get_region_constellation_ids(region_id):
     return result
 
 
+async def get_constellation_region_ids():
+    query = """select distinct region_id from constellation order by 1"""
+    # values = {"region_id": region_id}
+    # print(query,values)
+    result = await db_fetch(query, False)
+    return result
+
+
 async def get_constellation_data(constellation_id):
     query = """select * from constellation where constellation_id=:constellation_id order by 1"""
     values = {"constellation_id": constellation_id}
@@ -48,6 +56,14 @@ async def get_constellation_system_ids(constellation_id):
     values = {"constellation_id": constellation_id}
     # print(query,values)
     result = await db_fetch(query, True, values)
+    return result
+
+
+async def get_system_constellation_ids():
+    query = """select distinct constellation_id from system order by 1"""
+    # values = {"constellation_id": constellation_id}
+    # print(query,values)
+    result = await db_fetch(query, False)
     return result
 
 

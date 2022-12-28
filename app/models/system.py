@@ -17,7 +17,7 @@ class System(BaseModel):
     position: Position
     security_class: Optional[str] = Form("")
     security_status: float
-    star_id: Optional[int] = Form("")
+    star_id: Optional[int] = Form(None)
     stargates: Optional[List[int]] = Form([])
     stations: Optional[List[int]] = Form([])
     system_id: int

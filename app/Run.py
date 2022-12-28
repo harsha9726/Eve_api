@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from routes.v1 import app_v1
+from routes.incursion import app_incursion
 from utils.DB_conn import db
 
 app = FastAPI(title="Eve-online API", description="Its a API for Eve project")
 
 app.include_router(app_v1, prefix="/v1")
+app.include_router(app_incursion, prefix="/incursion")
 
 @app.on_event("startup")
 async def db_connect():

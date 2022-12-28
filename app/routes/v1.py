@@ -1,12 +1,12 @@
 import json
 
-
 from fastapi import APIRouter, Body
 import requests
 from utils.const import BASE_URL, TAIL_URL
 from utils.DB_functions import get_region_ids, insert_region_data, get_region_constellation_ids, \
     insert_constellation_data, get_constellation_ids, get_region_data, get_constellation_data, \
-    get_system_ids, get_system_data, insert_system_data, get_constellation_system_ids
+    get_system_ids, get_system_data, insert_system_data, get_constellation_system_ids, get_constellation_region_ids, \
+    get_system_constellation_ids
 from models.region import Region
 from models.constellation import Constellation
 from models.system import System
@@ -77,6 +77,17 @@ async def get_db_region_constellation_ids(region_id: int):
     return []
 
 
+@app_v1.get("/db/constellation/region/ids/", tags=["Region", "DB"])
+async def get_db_constellation_region_ids():
+    result = await get_constellation_region_ids()
+    regions = []
+    if result is None:
+        return []
+    for item in result:
+        regions.append(item["region_id"])
+    return regions
+
+
 @app_v1.get("/db/system_ids/{constellation_id}", tags=["System", "DB"])
 async def get_db_constellation_system_ids(constellation_id: int):
     result = await get_constellation_system_ids(constellation_id)
@@ -85,13 +96,25 @@ async def get_db_constellation_system_ids(constellation_id: int):
     return []
 
 
+@app_v1.get("/db/system/constellation/ids/", tags=["Constellation", "DB"])
+async def get_db_system_constellation_ids():
+    result = await get_system_constellation_ids()
+    constellations = []
+    if result is None:
+        return []
+    for item in result:
+        constellations.append(item["constellation_id"])
+    return constellations
+
+
 @app_v1.get("/db/region_data/{region_id}", response_model=Region, response_model_exclude=["id"], tags=["Region", "DB"])
 async def get_db_region_data(region_id: int):
     region = await get_region_data(region_id)
     return region
 
 
-@app_v1.get("/db/constellation_data/{constellation_id}", response_model=Constellation, response_model_exclude=["id"], tags=["Constellation", "DB"])
+@app_v1.get("/db/constellation_data/{constellation_id}", response_model=Constellation, response_model_exclude=["id"],
+            tags=["Constellation", "DB"])
 async def get_db_constellation_data(constellation_id: int):
     constellation = await get_constellation_data(constellation_id)
     if constellation:
