@@ -1,4 +1,5 @@
 import json
+from typing import Union
 
 from fastapi import APIRouter, Body
 import requests
@@ -107,13 +108,13 @@ async def get_db_system_constellation_ids():
     return constellations
 
 
-@app_v1.get("/db/region_data/{region_id}", response_model=Region, response_model_exclude=["id"], tags=["Region", "DB"])
+@app_v1.get("/db/region_data/{region_id}", response_model=Union[Region, None], response_model_exclude=["id"], tags=["Region", "DB"])
 async def get_db_region_data(region_id: int):
     region = await get_region_data(region_id)
     return region
 
 
-@app_v1.get("/db/constellation_data/{constellation_id}", response_model=Constellation, response_model_exclude=["id"],
+@app_v1.get("/db/constellation_data/{constellation_id}", response_model=Union[Constellation, None], response_model_exclude=["id"],
             tags=["Constellation", "DB"])
 async def get_db_constellation_data(constellation_id: int):
     constellation = await get_constellation_data(constellation_id)
@@ -122,7 +123,7 @@ async def get_db_constellation_data(constellation_id: int):
     return constellation
 
 
-@app_v1.get("/db/system_data/{system_id}", response_model=System, response_model_exclude=["id"], tags=["System", "DB"])
+@app_v1.get("/db/system_data/{system_id}", response_model=Union[System, None], response_model_exclude=["id"], tags=["System", "DB"])
 async def get_db_constellation_data(system_id: int):
     system = await get_system_data(system_id)
     if system:
