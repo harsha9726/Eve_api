@@ -100,13 +100,18 @@ async def insert_constellation_data(constellation):
 
 
 async def insert_system_data(system):
+    system = dict(system)
+    planets_data = system.pop('planets')
+    planets = []
+    for i in planets_data:
+        planets.append(i.planet_id)
+    system['planets'] = list(planets)
     query = """insert into system(constellation_id ,name,  planets, position, security_class, security_status,  
     star_id, stargates, stations, system_id) 
     values (:constellation_id ,:name,  :planets,  :position, :security_class, :security_status, :star_id,  :stargates, 
     :stations, :system_id) """
-    system = dict(system)
     system["position"] = json.dumps(jsonable_encoder(system["position"]))
-    system["planets"] = json.dumps(jsonable_encoder(system["planets"]))
+    # system["planets"] = json.dumps(jsonable_encoder(system["planets"]))
     values = system
 
     await db_execute(query, False, values)

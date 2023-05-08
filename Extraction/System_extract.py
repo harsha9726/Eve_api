@@ -13,6 +13,7 @@ for constellation in db_constellation_ids:
     constellation_system_ids = requests.get(f"http://127.0.0.1:8000/v1/db/system_ids/{constellation}").json()
     for system in constellation_system_ids:
         system_data = requests.get(f"http://127.0.0.1:8000/v1/universe/systems/{system}").json()
+        # print(system_data)
         eve_insert = requests.post("http://127.0.0.1:8000/v1/db/system_insert", json=system_data)
         if eve_insert.status_code != 200:
             print(f"Data not inserted for System {system}")
